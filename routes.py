@@ -42,10 +42,16 @@ def init_routes(app):
    
     @app.route('/getinvoices', methods=['GET'])
     def get_invoices():
+        offset = request.args.get('offset', '0')
+        limit = request.args.get('limit', '5')
+        status = request.args.get('status', 'sent')
+        api_url = f"{REST_API_URL}?offset={offset}&limit={limit}&status={status}"
+
         headers = {
-            'Authorization': API_AUTHORIZATION_HEADER
+            'Authorization': API_AUTHORIZATION_HEADER,
+            'Content-Type': 'application/json'
         }
-        response = requests.get(REST_API_URL, headers=headers)
+        response = requests.get(api_url, headers=headers)
         return jsonify(response.json())
         @app.route('/getheldtransactions', methods=['GET'])
         def get_held_transactions():
