@@ -3,22 +3,23 @@
 import requests
 import datetime
 import json
-from config import API_URL, API_LOGIN_ID, TRANSACTION_KEY
+from config import API_URL, API_LOGIN_ID, TRANSACTION_KEY,REST_API_URL
 
-def make_authorize_net_request(payload):
-    response = requests.post(API_URL, json=payload)
-    response_text = response.content.decode('utf-8-sig')
-    return json.loads(response_text)
+
 
 
 def make_authorize_net_request(payload):
-    response = requests.post(API_URL, json=payload)
+    headers = {
+         
+            'Content-Type': 'application/json'
+        }
+    response = requests.post(API_URL,headers=headers,json=payload)
     response_text = response.content.decode('utf-8-sig')
     return json.loads(response_text)
 
 def get_settled_batch_list():
     end_date = datetime.datetime.now()
-    start_date = end_date - datetime.timedelta(days=7)
+    start_date = end_date - datetime.timedelta(days=30)
 
     request_body = {
         "getSettledBatchListRequest": {
